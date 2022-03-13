@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-Widget InputWithLabel(label, hintText, controller, key, validator) {
+Widget InputWithLabel(
+    label, hintText, controller, key, validator, obscureText) {
   return (Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
     Padding(
       padding: const EdgeInsets.only(bottom: 2.0),
@@ -16,7 +17,7 @@ Widget InputWithLabel(label, hintText, controller, key, validator) {
       padding: const EdgeInsets.only(bottom: 16.0),
       child: TextFormField(
         key: Key(key),
-        obscureText: true,
+        obscureText: obscureText,
         validator: (value) => validator(value, key),
         decoration: InputDecoration(
           hintText: hintText,

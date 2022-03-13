@@ -51,11 +51,11 @@ class _LoginBodyState extends State<LoginBody> {
               padding: const EdgeInsets.only(bottom: 46.0, top: 48.0),
               child: loginHeaderTexts(context),
             ),
-            InputWithLabel(
-                'email', 'Enter Email', _loginController, 'email', validator),
+            InputWithLabel('email', 'Enter Email', _loginController, 'email',
+                validator, false),
             Expanded(
               child: InputWithLabel('password', 'Enter Password',
-                  _passwordController, 'password', validator),
+                  _passwordController, 'password', validator, true),
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 30.5),
@@ -121,9 +121,9 @@ class Login extends StatelessWidget {
             }),
         builder: (RunMutation runMutation, QueryResult? result) {
           return button(() => {
-                Future.delayed(Duration.zero, () async {
-                  onValidate();
-                }),
+                // Future.delayed(Duration.zero, () async {
+                //   onValidate();
+                // }),
                 runMutation({
                   'email': loginControllerText,
                   'password': passwordControllerText
