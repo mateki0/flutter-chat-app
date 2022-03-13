@@ -18,7 +18,6 @@ class MyApp extends StatelessWidget {
     return GraphQLProvider(
       client: getClient(),
       child: MaterialApp(
-        theme: ThemeData(scaffoldBackgroundColor: const Color(0xffB6DEFD)),
         routes: {
           '/': (context) => const LoginScreen(),
           '/rooms': (context) => const RoomsScreen(),

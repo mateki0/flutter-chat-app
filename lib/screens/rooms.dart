@@ -6,11 +6,9 @@ class RoomsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Rooms list'),
-      ),
-      body: const RoomsBody(),
+    return const Scaffold(
+      backgroundColor: Color(0xffF0F8FF),
+      body: RoomsBody(),
     );
   }
 }

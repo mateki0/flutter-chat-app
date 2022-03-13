@@ -8,6 +8,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       resizeToAvoidBottomInset: false,
+      backgroundColor: Color(0xffB6DEFD),
       body: LoginBody(),
     );
   }
