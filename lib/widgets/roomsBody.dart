@@ -72,53 +72,57 @@ class SingleRoom extends StatelessWidget {
 
           final lastMessage = result.data?['room']?['messages'][0];
 
-          return room(
-              false, result.data?['room']?['name'], lastMessage['body']);
+          return room(false, result.data?['room']?['name'], lastMessage['body'],
+              result.data?['room']?['id']);
         });
   }
 }
 
-Widget room(bool? isNewMessage, String roomName, String lastMessage) {
-  return (SizedBox(
-      height: 100,
-      child: Container(
-        margin: const EdgeInsets.only(top: 6.0, bottom: 6.0),
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12.0),
-          color: isNewMessage == true ? const Color(0xff5603AD) : Colors.white,
-        ),
-        child: Row(children: [
-          UserPhoto(),
-          Expanded(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                margin: const EdgeInsets.only(bottom: 6.0, left: 16.0),
-                child: Text(roomName,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    softWrap: false,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 15,
-                        color: isNewMessage == true
-                            ? Colors.white
-                            : Colors.black)),
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 6.0, left: 16.0),
-                child: Text(lastMessage,
-                    style: TextStyle(
-                        fontSize: 14,
-                        color: isNewMessage == true
-                            ? Colors.white
-                            : Colors.black)),
-              ),
-            ],
-          ))
-        ]),
-      )));
+Widget room(
+    bool? isNewMessage, String roomName, String lastMessage, String roomId) {
+  return (InkWell(
+      onTap: () => print('tapped ${roomId}'),
+      child: SizedBox(
+          height: 100,
+          child: Container(
+            margin: const EdgeInsets.only(top: 6.0, bottom: 6.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12.0),
+              color:
+                  isNewMessage == true ? const Color(0xff5603AD) : Colors.white,
+            ),
+            child: Row(children: [
+              UserPhoto(),
+              Expanded(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 6.0, left: 16.0),
+                    child: Text(roomName,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        softWrap: false,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15,
+                            color: isNewMessage == true
+                                ? Colors.white
+                                : Colors.black)),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 6.0, left: 16.0),
+                    child: Text(lastMessage,
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: isNewMessage == true
+                                ? Colors.white
+                                : Colors.black)),
+                  ),
+                ],
+              ))
+            ]),
+          ))));
 }
