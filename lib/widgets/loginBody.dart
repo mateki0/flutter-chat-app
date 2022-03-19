@@ -112,11 +112,12 @@ class Login extends StatelessWidget {
             onCompleted: (dynamic resultData) async {
               const storage = FlutterSecureStorage();
 
-              // if (resultData != null) {
-              //   String token = resultData['loginUser']['token'] ?? '';
+              if (resultData != null) {
+                String token = resultData['loginUser']['token'] ?? '';
+                print(token);
 
-              //   await storage.write(key: 'token', value: token);
-              // }
+                await storage.write(key: 'token', value: token);
+              }
               Navigator.pushNamed(context, '/rooms');
             }),
         builder: (RunMutation runMutation, QueryResult? result) {

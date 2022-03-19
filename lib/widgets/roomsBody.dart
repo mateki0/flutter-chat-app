@@ -18,20 +18,28 @@ class _RoomsBodyState extends State<RoomsBody> {
         options: QueryOptions(document: gql(roomList)),
         builder: (QueryResult result,
             {VoidCallback? refetch, FetchMore? fetchMore}) {
+          if (result.isLoading) {
+            return const Text('Loading');
+          }
+
           // if (result.hasException) {
           //   return Text(result.exception.toString());
-          // }
-          // if (result.isLoading) {
-          //   return const Text('Loading');
           // }
 
           print(result.data);
 
-          // if (result != null) {
-          //   List rooms = result.data?.['room'];
+          // if (result.data != null) {
+          //   List rooms = result.data?['room'];
+          //   ListView.builder(itemBuilder: (context, index) {
+          //     return ListTile(title: rooms[index]);
+          //   });
           // }
-          // return ListView.builder(itemBuilder: (context, index){
-          //   return Text(rooms\[index]\['name']);
+
+          // return Container();
+          // return ListView.builder(itemBuilder: (context, index) {
+          //   return SafeArea(
+          //       child: Column(
+          //           children: [singleRoom(false, 'roomName', 'something')]));
           // });
           return SafeArea(
             child: Column(

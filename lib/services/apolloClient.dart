@@ -1,28 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+const storage = FlutterSecureStorage();
+
+Future<String> getToken() async {
+  String? token = await storage.read(key: 'token');
+  if (token == null) {
+    return '';
+  }
+
+  return token;
+}
 
 ValueNotifier<GraphQLClient> getClient() {
   String? token = '';
-  const storage = FlutterSecureStorage();
 
-  Future<String> getPrefs() async {
-    String? token = await storage.read(key: 'token');
-    if (token == null) {
-      return '';
-    }
+  getToken().then((value) => token = value);
 
-    return token;
-  }
-
-  getPrefs().then((value) => token = value);
-
-  // getPrefs().then((value) => print(value));
   const String websocketEndpoint = 'wss://chat.thewidlarzgroup.com/socket';
 
   final HttpLink httpLink =
-      HttpLink('https://chat.thewidlarzgroup.com/api/graphiql');
+      HttpLink('https://chat.thewidlarzgroup.com/api/graphql');
 
   final AuthLink authLink = AuthLink(getToken: () async => 'Bearer $token');
 
