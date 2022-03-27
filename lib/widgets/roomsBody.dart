@@ -1,9 +1,12 @@
 import 'package:chat_app/graphql/queries/roomList.dart';
 import 'package:chat_app/graphql/queries/singleRoom.dart';
+import 'package:chat_app/screens/singleRoomScreen.dart';
+import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import './header.dart';
 import './userPhoto.dart';
+import 'chatBody.dart';
 
 class RoomsBody extends StatefulWidget {
   const RoomsBody({Key? key}) : super(key: key);
@@ -72,16 +75,42 @@ class SingleRoom extends StatelessWidget {
 
           final lastMessage = result.data?['room']?['messages'][0];
 
+          List messages = result.data?['room']?['messages'];
+          var userFromResponse = result.data?['room']?['user'];
+
+          ChatUser user = ChatUser(
+            id: userFromResponse['id'],
+            firstName: userFromResponse['firstName'],
+            lastName: userFromResponse['lastName'],
+          );
+
+          List<ChatMessage> chatMessages = messages
+              .map((a) => ChatMessage.new(
+                  text: a["body"],
+                  createdAt: DateTime.parse(a['insertedAt']),
+                  user: user))
+              .toList();
+
           return room(false, result.data?['room']?['name'], lastMessage['body'],
-              result.data?['room']?['id']);
+              result.data?['room']?['id'], chatMessages, context);
         });
   }
 }
 
-Widget room(
-    bool? isNewMessage, String roomName, String lastMessage, String roomId) {
+Widget room(bool? isNewMessage, String roomName, String lastMessage,
+    String roomId, List<ChatMessage> messages, context) {
   return (InkWell(
-      onTap: () => print('tapped ${roomId}'),
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const SingleRoomScreen(),
+                settings: RouteSettings(arguments: {
+                  'roomId': roomId,
+                  'roomName': roomName,
+                  'messages': messages
+                })));
+      },
       child: SizedBox(
           height: 100,
           child: Container(

@@ -8,6 +8,12 @@ String singleRoom = """
           id
           insertedAt
         }
+        user{
+          firstName
+          id
+          lastName
+          email
+        }
       }
     }
 """;

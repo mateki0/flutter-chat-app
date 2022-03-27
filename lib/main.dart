@@ -5,6 +5,8 @@ import './services/apolloClient.dart';
 import './screens/rooms.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import 'screens/singleRoomScreen.dart';
+
 const storage = FlutterSecureStorage();
 
 Future<void> main() async {
@@ -32,7 +34,7 @@ class MyApp extends StatelessWidget {
         routes: {
           '/login': (context) => const LoginScreen(),
           '/rooms': (context) => const RoomsScreen(),
-          // '/room:id': (context) => Room(id)
+          '/singleRoom': (context) => const SingleRoomScreen(),
         },
       ),
     );

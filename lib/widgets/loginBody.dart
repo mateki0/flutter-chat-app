@@ -114,7 +114,6 @@ class Login extends StatelessWidget {
 
               if (resultData != null) {
                 String token = resultData['loginUser']['token'] ?? '';
-                print(token);
 
                 await storage.write(key: 'token', value: token);
               }
