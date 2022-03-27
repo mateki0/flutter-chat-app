@@ -1,6 +1,10 @@
+import 'package:chat_app/graphql/queries/currentUser.dart';
+import 'package:chat_app/services/userProvider.dart';
 import 'package:chat_app/widgets/header.dart';
 import 'package:flutter/material.dart';
 import 'package:dash_chat_2/dash_chat_2.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:provider/provider.dart';
 
 class ChatBody extends StatefulWidget {
   final List<ChatMessage> messages;
@@ -31,11 +35,6 @@ class Chat extends StatefulWidget {
 }
 
 class _ChatState extends State<Chat> {
-  final ChatUser otherUser = ChatUser(
-    firstName: 'secondUser',
-    id: '213213',
-  );
-
   List<ChatMessage> m = [];
 
   var i = 0;
@@ -53,12 +52,35 @@ class _ChatState extends State<Chat> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.messages.isEmpty) {
-      return Container();
-    } else {
-      m = widget.messages;
-      return Expanded(
-          child: DashChat(messages: m, currentUser: otherUser, onSend: onSend));
-    }
+    return Query(
+        options: QueryOptions(document: gql(currentUser)),
+        builder: (QueryResult result,
+            {VoidCallback? refetch, FetchMore? fetchMore}) {
+          if (result.isLoading) {
+            return const Text('Loading');
+          }
+          if (result.data == null) return const Text('Error');
+
+          var user = context.read<User>();
+
+          String firstName = result.data?['user']?['firstName'];
+          String id = result.data?['user']?['id'];
+
+          final ChatUser currentUser = ChatUser(
+            firstName: firstName,
+            id: id,
+          );
+
+          user.updateUser(firstName, id);
+
+          if (widget.messages.isEmpty) {
+            return Container();
+          } else {
+            m = widget.messages;
+            return Expanded(
+                child: DashChat(
+                    messages: m, currentUser: currentUser, onSend: onSend));
+          }
+        });
   }
 }

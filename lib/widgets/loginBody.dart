@@ -116,6 +116,8 @@ class Login extends StatelessWidget {
                 String token = resultData['loginUser']['token'] ?? '';
 
                 await storage.write(key: 'token', value: token);
+                // await storage.write(key: 'firstName', value: resultData['loginUser']['user']['firstName']);
+                // await storage.write(key: 'id', value: resultData['loginUser']['user']['id']);
               }
               Navigator.pushNamed(context, '/rooms');
             }),

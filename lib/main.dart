@@ -1,9 +1,11 @@
+import 'package:chat_app/services/userProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import './screens/login.dart';
 import './services/apolloClient.dart';
 import './screens/rooms.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:provider/provider.dart';
 
 import 'screens/singleRoomScreen.dart';
 
@@ -27,15 +29,22 @@ class MyApp extends StatelessWidget {
   final String page;
   @override
   Widget build(BuildContext context) {
-    return GraphQLProvider(
-      client: getClient(),
-      child: MaterialApp(
-        initialRoute: page,
-        routes: {
-          '/login': (context) => const LoginScreen(),
-          '/rooms': (context) => const RoomsScreen(),
-          '/singleRoom': (context) => const SingleRoomScreen(),
-        },
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => User(),
+        )
+      ],
+      child: GraphQLProvider(
+        client: getClient(),
+        child: MaterialApp(
+          initialRoute: page,
+          routes: {
+            '/login': (context) => const LoginScreen(),
+            '/rooms': (context) => const RoomsScreen(),
+            '/singleRoom': (context) => const SingleRoomScreen(),
+          },
+        ),
       ),
     );
   }

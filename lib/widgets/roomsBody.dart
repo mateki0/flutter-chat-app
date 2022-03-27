@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import './header.dart';
 import './userPhoto.dart';
-import 'chatBody.dart';
 
 class RoomsBody extends StatefulWidget {
   const RoomsBody({Key? key}) : super(key: key);
