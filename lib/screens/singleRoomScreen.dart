@@ -11,7 +11,7 @@ class SingleRoomScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: const Color(0xffF0F8FF),
-      body: ChatBody(messages: data['messages']),
+      body: ChatBody(messages: data['messages'], roomName: data['roomName']),
     );
   }
 }

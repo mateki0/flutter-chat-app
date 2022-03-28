@@ -4,7 +4,7 @@ import 'package:chat_app/screens/singleRoomScreen.dart';
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import './header.dart';
+import 'header/roomsListHeader.dart';
 import './userPhoto.dart';
 
 class RoomsBody extends StatefulWidget {
@@ -39,7 +39,7 @@ class _RoomsBodyState extends State<RoomsBody> {
           return SafeArea(
               child: Column(
             children: [
-              Header('Rooms'),
+              roomsListHeader('Rooms'),
               Expanded(
                   child: ListView.builder(
                       padding: const EdgeInsets.only(top: 30.0),
@@ -47,6 +47,7 @@ class _RoomsBodyState extends State<RoomsBody> {
                       itemCount: rooms.length,
                       itemBuilder: (context, index) {
                         final room = rooms[index];
+
                         return SingleRoom(roomId: room['id']);
                       }))
             ],
