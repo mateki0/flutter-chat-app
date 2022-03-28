@@ -1,6 +1,7 @@
 import 'package:chat_app/graphql/queries/roomList.dart';
 import 'package:chat_app/graphql/queries/singleRoom.dart';
 import 'package:chat_app/screens/singleRoomScreen.dart';
+import 'package:chat_app/view_models/loadingAnimation.dart';
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -22,7 +23,7 @@ class _RoomsBodyState extends State<RoomsBody> {
         builder: (QueryResult result,
             {VoidCallback? refetch, FetchMore? fetchMore}) {
           if (result.isLoading) {
-            return const Text('Loading');
+            return const CustomLoader();
           }
           if (result.data == null) return const Text('Error');
 
@@ -91,6 +92,7 @@ class SingleRoom extends StatelessWidget {
                   user: user))
               .toList();
 
+          // return const CustomLoader();
           return room(false, result.data?['room']?['name'], lastMessage['body'],
               result.data?['room']?['id'], chatMessages, context);
         });

@@ -6,6 +6,8 @@ import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:provider/provider.dart';
 
+import '../view_models/loadingAnimation.dart';
+
 class ChatBody extends StatefulWidget {
   final List<ChatMessage> messages;
   final String roomName;
@@ -65,7 +67,7 @@ class _ChatState extends State<Chat> {
         builder: (QueryResult result,
             {VoidCallback? refetch, FetchMore? fetchMore}) {
           if (result.isLoading) {
-            return const Text('Loading');
+            return const Expanded(child: CustomLoader());
           }
           if (result.data == null) return const Text('Error');
 
