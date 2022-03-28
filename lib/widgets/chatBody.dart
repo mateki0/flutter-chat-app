@@ -1,6 +1,5 @@
 import 'package:chat_app/graphql/queries/currentUser.dart';
 import 'package:chat_app/services/userProvider.dart';
-import 'package:chat_app/widgets/header/roomsListHeader.dart';
 import 'package:chat_app/widgets/header/singleRoomHeader.dart';
 import 'package:flutter/material.dart';
 import 'package:dash_chat_2/dash_chat_2.dart';
@@ -11,8 +10,11 @@ class ChatBody extends StatefulWidget {
   final List<ChatMessage> messages;
   final String roomName;
 
-  const ChatBody({Key? key, required this.messages, required this.roomName})
-      : super(key: key);
+  const ChatBody({
+    Key? key,
+    required this.messages,
+    required this.roomName,
+  }) : super(key: key);
 
   @override
   _ChatBodyState createState() => _ChatBodyState();
