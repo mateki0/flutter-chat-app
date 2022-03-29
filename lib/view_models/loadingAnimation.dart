@@ -110,6 +110,12 @@ class _CustomLoaderState extends State<CustomLoader>
   }
 
   @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Center(
       child: Column(

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:chat_app/graphql/queries/roomList.dart';
 import 'package:chat_app/graphql/queries/singleRoom.dart';
 import 'package:chat_app/screens/singleRoomScreen.dart';
@@ -15,16 +17,35 @@ class RoomsBody extends StatefulWidget {
   _RoomsBodyState createState() => _RoomsBodyState();
 }
 
+bool loading = true;
+
 class _RoomsBodyState extends State<RoomsBody> {
+  delayedAnimation() {
+    Future.delayed(const Duration(seconds: 5), () {
+      setState(() {
+        loading = false;
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    delayedAnimation();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Query(
         options: QueryOptions(document: gql(roomList)),
         builder: (QueryResult result,
             {VoidCallback? refetch, FetchMore? fetchMore}) {
-          if (result.isLoading) {
+          if (result.isLoading || loading) {
             return const CustomLoader();
           }
+
+          // sleep(const Duration(seconds: 2));
+
           if (result.data == null) return const Text('Error');
 
           // if (result.hasException) {
