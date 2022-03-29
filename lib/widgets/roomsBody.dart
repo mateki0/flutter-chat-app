@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:chat_app/graphql/queries/roomList.dart';
 import 'package:chat_app/graphql/queries/singleRoom.dart';
 import 'package:chat_app/screens/singleRoomScreen.dart';
@@ -44,13 +42,7 @@ class _RoomsBodyState extends State<RoomsBody> {
             return const CustomLoader();
           }
 
-          // sleep(const Duration(seconds: 2));
-
           if (result.data == null) return const Text('Error');
-
-          // if (result.hasException) {
-          //   return Text(result.exception.toString());
-          // }
 
           List rooms = result.data?['usersRooms']?['rooms'] ?? [];
 
@@ -113,7 +105,6 @@ class SingleRoom extends StatelessWidget {
                   user: user))
               .toList();
 
-          // return const CustomLoader();
           return room(false, result.data?['room']?['name'], lastMessage['body'],
               result.data?['room']?['id'], chatMessages, context);
         });

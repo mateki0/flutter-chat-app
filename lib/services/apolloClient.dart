@@ -13,11 +13,7 @@ Future<String> getToken() async {
   return token;
 }
 
-ValueNotifier<GraphQLClient> getClient() {
-  String? token = '';
-
-  getToken().then((value) => token = value);
-
+ValueNotifier<GraphQLClient> getClient(token) {
   final HttpLink httpLink =
       HttpLink('https://chat.thewidlarzgroup.com/api/graphql');
 

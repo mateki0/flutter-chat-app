@@ -16,17 +16,20 @@ Future<void> main() async {
 
   getToken().then((token) {
     if (token.isEmpty) {
-      runApp(const MyApp(page: '/login'));
+      runApp(const MyApp(page: '/login', token: ''));
     } else {
-      runApp(const MyApp(page: '/rooms'));
+      runApp(MyApp(page: '/rooms', token: token));
     }
   });
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key, required this.page}) : super(key: key);
+  const MyApp({Key? key, required this.page, required this.token})
+      : super(key: key);
 
   final String page;
+  final String token;
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -36,7 +39,7 @@ class MyApp extends StatelessWidget {
         )
       ],
       child: GraphQLProvider(
-        client: getClient(),
+        client: getClient(token),
         child: MaterialApp(
           initialRoute: page,
           routes: {

@@ -60,8 +60,8 @@ class _LoginBodyState extends State<LoginBody> {
             Padding(
               padding: const EdgeInsets.only(bottom: 30.5),
               child: Login(
-                loginControllerText: _loginController.text,
-                passwordControllerText: _passwordController.text,
+                loginController: _loginController,
+                passwordController: _passwordController,
                 onValidate: validateForm,
               ),
             ),
@@ -90,14 +90,14 @@ class _LoginBodyState extends State<LoginBody> {
 
 class Login extends StatelessWidget {
   const Login(
-      {required this.loginControllerText,
-      required this.passwordControllerText,
+      {required this.loginController,
+      required this.passwordController,
       required this.onValidate,
       Key? key})
       : super(key: key);
 
-  final String loginControllerText;
-  final String passwordControllerText;
+  final TextEditingController loginController;
+  final TextEditingController passwordController;
   final void Function() onValidate;
 
   @override
@@ -109,6 +109,9 @@ class Login extends StatelessWidget {
             update: (GraphQLDataProxy cache, QueryResult? result) {
               return cache;
             },
+            onError: (error) {
+              print('error ${error}');
+            },
             onCompleted: (dynamic resultData) async {
               const storage = FlutterSecureStorage();
 
@@ -116,17 +119,17 @@ class Login extends StatelessWidget {
                 String token = resultData['loginUser']['token'] ?? '';
 
                 await storage.write(key: 'token', value: token);
+                Navigator.pushNamed(context, '/rooms');
               }
-              Navigator.pushNamed(context, '/rooms');
             }),
         builder: (RunMutation runMutation, QueryResult? result) {
           return button(() => {
-                // Future.delayed(Duration.zero, () async {
-                //   onValidate();
-                // }),
+                Future.delayed(Duration.zero, () async {
+                  onValidate();
+                }),
                 runMutation({
-                  'email': loginControllerText,
-                  'password': passwordControllerText
+                  'email': loginController.text,
+                  'password': passwordController.text
                 })
               });
         });
