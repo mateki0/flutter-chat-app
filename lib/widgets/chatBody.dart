@@ -127,9 +127,6 @@ class _ChatComponentState extends State<ChatComponent> {
     return Mutation(
         options: MutationOptions(
             document: gql(sendMessage),
-            onError: (error) {
-              print('error $error');
-            },
             // ignore: void_checks
             update: (GraphQLDataProxy cache, QueryResult? result) {
               return cache;
@@ -140,7 +137,8 @@ class _ChatComponentState extends State<ChatComponent> {
                   messages: widget.messages,
                   currentUser: widget.currentUser,
                   onSend: (message) => {
-                        runMutation({'body': message, 'roomId': widget.roomId}),
+                        runMutation(
+                            {'body': message.text, 'roomId': widget.roomId}),
                         onSend(message)
                       }));
         });
