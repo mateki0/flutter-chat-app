@@ -6,16 +6,19 @@ import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:provider/provider.dart';
 
+import '../graphql/mutations/sendMessage.dart';
 import '../view_models/loadingAnimation.dart';
 
 class ChatBody extends StatefulWidget {
   final List<ChatMessage> messages;
   final String roomName;
+  final String roomId;
 
   const ChatBody({
     Key? key,
     required this.messages,
     required this.roomName,
+    required this.roomId,
   }) : super(key: key);
 
   @override
@@ -29,7 +32,7 @@ class _ChatBodyState extends State<ChatBody> {
         child: Column(
       children: [
         singleRoomHeader(widget.roomName, context),
-        Chat(messages: widget.messages)
+        Chat(messages: widget.messages, roomId: widget.roomId)
       ],
     ));
   }
@@ -37,8 +40,10 @@ class _ChatBodyState extends State<ChatBody> {
 
 class Chat extends StatefulWidget {
   final List<ChatMessage> messages;
+  final String roomId;
 
-  const Chat({Key? key, required this.messages}) : super(key: key);
+  const Chat({Key? key, required this.messages, required this.roomId})
+      : super(key: key);
 
   @override
   _ChatState createState() => _ChatState();
@@ -87,10 +92,57 @@ class _ChatState extends State<Chat> {
             return Container();
           } else {
             m = widget.messages;
-            return Expanded(
-                child: DashChat(
-                    messages: m, currentUser: currentUser, onSend: onSend));
+            return ChatComponent(
+                messages: m, currentUser: currentUser, roomId: widget.roomId);
           }
+        });
+  }
+}
+
+class ChatComponent extends StatefulWidget {
+  final List<ChatMessage> messages;
+  final ChatUser currentUser;
+  final String roomId;
+
+  const ChatComponent(
+      {Key? key,
+      required this.messages,
+      required this.currentUser,
+      required this.roomId})
+      : super(key: key);
+
+  @override
+  _ChatComponentState createState() => _ChatComponentState();
+}
+
+class _ChatComponentState extends State<ChatComponent> {
+  @override
+  Widget build(BuildContext context) {
+    void onSend(ChatMessage message) {
+      setState(() {
+        widget.messages.insert(0, message);
+      });
+    }
+
+    return Mutation(
+        options: MutationOptions(
+            document: gql(sendMessage),
+            onError: (error) {
+              print('error $error');
+            },
+            // ignore: void_checks
+            update: (GraphQLDataProxy cache, QueryResult? result) {
+              return cache;
+            }),
+        builder: (RunMutation runMutation, QueryResult? result) {
+          return Expanded(
+              child: DashChat(
+                  messages: widget.messages,
+                  currentUser: widget.currentUser,
+                  onSend: (message) => {
+                        runMutation({'body': message, 'roomId': widget.roomId}),
+                        onSend(message)
+                      }));
         });
   }
 }

@@ -1,4 +1,5 @@
 import 'package:chat_app/graphql/mutations/login.dart';
+import 'package:chat_app/services/apolloClient.dart';
 import 'package:chat_app/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -118,6 +119,7 @@ class Login extends StatelessWidget {
               if (resultData != null) {
                 String token = resultData['loginUser']['token'] ?? '';
 
+                setToken(token);
                 await storage.write(key: 'token', value: token);
                 Navigator.pushNamed(context, '/rooms');
               }

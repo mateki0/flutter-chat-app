@@ -16,19 +16,18 @@ Future<void> main() async {
 
   getToken().then((token) {
     if (token.isEmpty) {
-      runApp(const MyApp(page: '/login', token: ''));
+      runApp(const MyApp(page: '/login'));
     } else {
-      runApp(MyApp(page: '/rooms', token: token));
+      setToken(token);
+      runApp(const MyApp(page: '/rooms'));
     }
   });
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key, required this.page, required this.token})
-      : super(key: key);
+  const MyApp({Key? key, required this.page}) : super(key: key);
 
   final String page;
-  final String token;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +38,7 @@ class MyApp extends StatelessWidget {
         )
       ],
       child: GraphQLProvider(
-        client: getClient(token),
+        client: getClient(),
         child: MaterialApp(
           initialRoute: page,
           routes: {

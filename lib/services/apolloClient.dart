@@ -13,11 +13,23 @@ Future<String> getToken() async {
   return token;
 }
 
-ValueNotifier<GraphQLClient> getClient(token) {
-  final HttpLink httpLink =
-      HttpLink('https://chat.thewidlarzgroup.com/api/graphql');
+class GraphQLConfiguration {
+  static String token = '';
+}
 
-  final AuthLink authLink = AuthLink(getToken: () async => 'Bearer $token');
+void setToken(String token) {
+  GraphQLConfiguration.token = token;
+}
+
+String getLoginToken() {
+  return GraphQLConfiguration.token;
+}
+
+ValueNotifier<GraphQLClient> getClient() {
+  HttpLink httpLink = HttpLink('https://chat.thewidlarzgroup.com/api/graphql');
+
+  AuthLink authLink =
+      AuthLink(getToken: () async => 'Bearer ${getLoginToken()}');
 
   Link _link = authLink.concat(httpLink);
 

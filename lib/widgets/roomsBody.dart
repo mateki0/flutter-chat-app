@@ -19,7 +19,7 @@ bool loading = true;
 
 class _RoomsBodyState extends State<RoomsBody> {
   delayedAnimation() {
-    Future.delayed(const Duration(seconds: 5), () {
+    Future.delayed(const Duration(seconds: 2), () {
       setState(() {
         loading = false;
       });
@@ -82,10 +82,10 @@ class SingleRoom extends StatelessWidget {
             QueryOptions(document: gql(singleRoom), variables: {'id': roomId}),
         builder: (QueryResult result,
             {VoidCallback? refetch, FetchMore? fetchMore}) {
-          if (result.isLoading) {
-            return const Text('Loading');
-          }
-          if (result.data == null) return const Text('Error');
+          // if (result.isLoading) {
+          //   return const Text('Loading');
+          // }
+          if (result.data == null) return const CustomLoader();
 
           final lastMessage = result.data?['room']?['messages'][0];
 
