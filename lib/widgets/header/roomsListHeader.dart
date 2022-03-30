@@ -26,7 +26,6 @@ Widget roomsListHeader(String title, BuildContext context) {
 Widget roomsListButtons(context) {
   const String searchIcon = 'assets/search.svg';
   const String peopleIcon = 'assets/users.svg';
-  const String logoutIcon = 'assets/users.svg';
 
   void onSearchTap() {
     print('search icon tapped');
@@ -50,7 +49,8 @@ Widget roomsListButtons(context) {
     children: [
       iconWrapper(SvgPicture.asset(searchIcon), onSearchTap),
       iconWrapper(SvgPicture.asset(peopleIcon), onUsersTap),
-      iconWrapper(SvgPicture.asset(logoutIcon), onLogoutTap),
+      iconWrapper(
+          const Icon(Icons.logout, color: Color(0xff5603AD)), onLogoutTap),
     ],
   ));
 }
