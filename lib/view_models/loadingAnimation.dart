@@ -29,7 +29,7 @@ class SquareTile extends StatelessWidget {
     Color? getColor() {
       switch (squareType) {
         case SquareType.first:
-          return Colors.blue[100];
+          return Colors.red[200];
         case SquareType.second:
           return Colors.purple[100];
         case SquareType.third:

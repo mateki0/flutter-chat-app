@@ -2,8 +2,11 @@ import 'package:chat_app/widgets/header/iconWrapper.dart';
 import 'package:chat_app/widgets/screenTitle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-Widget roomsListHeader(title) {
+import '../../services/userProvider.dart';
+
+Widget roomsListHeader(String title, BuildContext context) {
   return (SizedBox(
       height: 120,
       child: (Container(
@@ -16,13 +19,14 @@ Widget roomsListHeader(title) {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [ScreenTitle(title), roomsListButtons()],
+            children: [ScreenTitle(title), roomsListButtons(context)],
           )))));
 }
 
-Widget roomsListButtons() {
+Widget roomsListButtons(context) {
   const String searchIcon = 'assets/search.svg';
   const String peopleIcon = 'assets/users.svg';
+  const String logoutIcon = 'assets/users.svg';
 
   void onSearchTap() {
     print('search icon tapped');
@@ -32,11 +36,21 @@ Widget roomsListButtons() {
     print('users icon tapped');
   }
 
+  void onLogoutTap() async {
+    const storage = FlutterSecureStorage();
+    var user = context.read<User>();
+
+    user.updateUser('', '');
+    await storage.write(key: 'token', value: '');
+    Navigator.pushNamed(context, '/login');
+  }
+
   return (Wrap(
     spacing: 8,
     children: [
       iconWrapper(SvgPicture.asset(searchIcon), onSearchTap),
       iconWrapper(SvgPicture.asset(peopleIcon), onUsersTap),
+      iconWrapper(SvgPicture.asset(logoutIcon), onLogoutTap),
     ],
   ));
 }

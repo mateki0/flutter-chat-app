@@ -42,28 +42,24 @@ class _RoomsBodyState extends State<RoomsBody> {
             return const CustomLoader();
           }
 
-          if (result.data == null) return const Text('Error');
-
           List rooms = result.data?['usersRooms']?['rooms'] ?? [];
-
-          if (rooms.isEmpty) {
-            return const Text('rooms are empty');
-          }
 
           return SafeArea(
               child: Column(
             children: [
-              roomsListHeader('Rooms'),
+              roomsListHeader('Rooms', context),
               Expanded(
-                  child: ListView.builder(
-                      padding: const EdgeInsets.only(top: 30.0),
-                      shrinkWrap: true,
-                      itemCount: rooms.length,
-                      itemBuilder: (context, index) {
-                        final room = rooms[index];
+                  child: rooms.isNotEmpty
+                      ? ListView.builder(
+                          padding: const EdgeInsets.only(top: 30.0),
+                          shrinkWrap: true,
+                          itemCount: rooms.length,
+                          itemBuilder: (context, index) {
+                            final room = rooms[index];
 
-                        return SingleRoom(roomId: room['id']);
-                      }))
+                            return SingleRoom(roomId: room['id']);
+                          })
+                      : const CustomLoader())
             ],
           ));
         });
@@ -82,10 +78,9 @@ class SingleRoom extends StatelessWidget {
             QueryOptions(document: gql(singleRoom), variables: {'id': roomId}),
         builder: (QueryResult result,
             {VoidCallback? refetch, FetchMore? fetchMore}) {
-          // if (result.isLoading) {
-          //   return const Text('Loading');
-          // }
-          if (result.data == null) return const CustomLoader();
+          if (result.isLoading) {
+            return Container();
+          }
 
           final lastMessage = result.data?['room']?['messages'][0];
 
@@ -112,7 +107,7 @@ class SingleRoom extends StatelessWidget {
 }
 
 Widget room(bool? isNewMessage, String roomName, String lastMessage,
-    String roomId, List<ChatMessage> messages, context) {
+    String roomId, List<ChatMessage> messages, BuildContext context) {
   return (InkWell(
       onTap: () {
         Navigator.push(

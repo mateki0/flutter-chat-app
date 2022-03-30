@@ -1,5 +1,6 @@
 import 'package:chat_app/graphql/mutations/login.dart';
 import 'package:chat_app/services/apolloClient.dart';
+import 'package:chat_app/view_models/loadingAnimation.dart';
 import 'package:chat_app/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -106,12 +107,8 @@ class Login extends StatelessWidget {
     return Mutation(
         options: MutationOptions(
             document: gql(login),
-            // ignore: void_checks
-            update: (GraphQLDataProxy cache, QueryResult? result) {
-              return cache;
-            },
             onError: (error) {
-              print('error ${error}');
+              Navigator.of(context).restorablePush(_dialogBuilder);
             },
             onCompleted: (dynamic resultData) async {
               const storage = FlutterSecureStorage();
@@ -125,20 +122,22 @@ class Login extends StatelessWidget {
               }
             }),
         builder: (RunMutation runMutation, QueryResult? result) {
-          return button(() => {
-                Future.delayed(Duration.zero, () async {
-                  onValidate();
-                }),
-                runMutation({
-                  'email': loginController.text,
-                  'password': passwordController.text
-                })
-              });
+          return result != null && result.isLoading
+              ? const CustomLoader()
+              : button(() => {
+                    Future.delayed(Duration.zero, () async {
+                      onValidate();
+                    }),
+                    runMutation({
+                      'email': loginController.text,
+                      'password': passwordController.text
+                    })
+                  });
         });
   }
 }
 
-Widget loginHeaderTexts(context) {
+Widget loginHeaderTexts(BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -153,4 +152,22 @@ Widget loginHeaderTexts(context) {
               color: Color(0xffffffff))),
     ],
   );
+}
+
+Route<Object?> _dialogBuilder(BuildContext context, Object? argument) {
+  return DialogRoute(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Invalid credentials'),
+          content: const Text('Email or password are incorrect'),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Try Again'))
+          ],
+        );
+      });
 }
