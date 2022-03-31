@@ -53,11 +53,21 @@ class _LoginBodyState extends State<LoginBody> {
               padding: const EdgeInsets.only(bottom: 46.0, top: 48.0),
               child: loginHeaderTexts(context),
             ),
-            InputWithLabel('email', 'Enter Email', _loginController, 'email',
-                validator, false),
+            InputWithLabel(
+                label: 'email',
+                hintText: 'Enter Email',
+                controller: _loginController,
+                inputKey: 'email',
+                validator: validator,
+                obscureText: false),
             Expanded(
-              child: InputWithLabel('password', 'Enter Password',
-                  _passwordController, 'password', validator, true),
+              child: InputWithLabel(
+                  label: 'password',
+                  hintText: 'Enter Password',
+                  controller: _passwordController,
+                  inputKey: 'password',
+                  validator: validator,
+                  obscureText: true),
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 30.5),

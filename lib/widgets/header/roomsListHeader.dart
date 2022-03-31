@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import '../../services/userProvider.dart';
-
 Widget roomsListHeader(String title, BuildContext context) {
   return (SizedBox(
       height: 120,
@@ -37,9 +35,7 @@ Widget roomsListButtons(context) {
 
   void onLogoutTap() async {
     const storage = FlutterSecureStorage();
-    var user = context.read<User>();
 
-    user.updateUser('', '');
     await storage.write(key: 'token', value: '');
     Navigator.pushNamed(context, '/login');
   }
