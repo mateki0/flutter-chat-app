@@ -47,7 +47,7 @@ class _InputWithLabelState extends State<InputWithLabel> {
         padding: const EdgeInsets.only(bottom: 16.0),
         child: TextFormField(
           key: Key(widget.inputKey),
-          obscureText: inputObscure,
+          obscureText: widget.inputKey.contains('password') && inputObscure,
           validator: (value) => widget.validator(value, widget.inputKey),
           decoration: InputDecoration(
             suffixIcon: widget.obscureText

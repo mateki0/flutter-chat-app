@@ -124,6 +124,10 @@ class _ChatComponentState extends State<ChatComponent> {
       });
     }
 
+    const MessageOptions messageOptions = MessageOptions(
+        currentUserContainerColor: Color(0xff993AFC),
+        currentUserTextColor: Color(0xffffffff));
+
     return Mutation(
         options: MutationOptions(
             document: gql(sendMessage),
@@ -134,6 +138,7 @@ class _ChatComponentState extends State<ChatComponent> {
         builder: (RunMutation runMutation, QueryResult? result) {
           return Expanded(
               child: DashChat(
+                  messageOptions: messageOptions,
                   messages: widget.messages,
                   currentUser: widget.currentUser,
                   onSend: (message) => {
