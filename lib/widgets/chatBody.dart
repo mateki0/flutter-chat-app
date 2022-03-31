@@ -126,15 +126,14 @@ class _ChatComponentState extends State<ChatComponent> {
 
     const MessageOptions messageOptions = MessageOptions(
         currentUserContainerColor: Color(0xff993AFC),
-        currentUserTextColor: Color(0xffffffff));
+        currentUserTextColor: Color(0xffffffff),
+        containerColor: Color(0xffffffff),
+        textColor: Color(0xff1A1A1A));
 
     return Mutation(
         options: MutationOptions(
-            document: gql(sendMessage),
-            // ignore: void_checks
-            update: (GraphQLDataProxy cache, QueryResult? result) {
-              return cache;
-            }),
+          document: gql(sendMessage),
+        ),
         builder: (RunMutation runMutation, QueryResult? result) {
           return Expanded(
               child: DashChat(
