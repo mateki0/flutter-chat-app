@@ -1,7 +1,7 @@
 import 'package:chat_app/graphql/mutations/login.dart';
 import 'package:chat_app/services/apolloClient.dart';
-import 'package:chat_app/view_models/loadingAnimation.dart';
 import 'package:chat_app/widgets/button.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -133,7 +133,9 @@ class Login extends StatelessWidget {
             }),
         builder: (RunMutation runMutation, QueryResult? result) {
           return result != null && result.isLoading
-              ? const CustomLoader()
+              ? const CupertinoActivityIndicator(
+                  color: Color(0xff5603AD),
+                )
               : button(() => {
                     Future.delayed(Duration.zero, () async {
                       onValidate();

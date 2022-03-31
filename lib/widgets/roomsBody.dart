@@ -78,10 +78,6 @@ class SingleRoom extends StatelessWidget {
             QueryOptions(document: gql(singleRoom), variables: {'id': roomId}),
         builder: (QueryResult result,
             {VoidCallback? refetch, FetchMore? fetchMore}) {
-          if (result.isLoading) {
-            return Container();
-          }
-
           final lastMessage = result.data?['room']?['messages'][0];
 
           List messages = result.data?['room']?['messages'];
@@ -109,6 +105,7 @@ class SingleRoom extends StatelessWidget {
 Widget room(bool? isNewMessage, String roomName, String lastMessage,
     String roomId, List<ChatMessage> messages, BuildContext context) {
   return (InkWell(
+      splashColor: const Color(0xff993AFC),
       onTap: () {
         Navigator.push(
             context,
