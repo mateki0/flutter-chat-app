@@ -132,35 +132,35 @@ Widget room(bool? isNewMessage, String roomName, String lastMessage,
             ),
             child: Row(children: [
               UserPhoto(),
-              Expanded(
-                  child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(bottom: 6.0, left: 16.0),
-                    child: Text(roomName,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        softWrap: false,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 15,
-                            color: isNewMessage == true
-                                ? Colors.white
-                                : Colors.black)),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 6.0, left: 16.0),
-                    child: Text(lastMessage,
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: isNewMessage == true
-                                ? Colors.white
-                                : Colors.black)),
-                  ),
-                ],
-              ))
+              roomTexts(roomName, isNewMessage, lastMessage)
             ]),
           ))));
+}
+
+Widget roomTexts(String roomName, bool? isNewMessage, String lastMessage) {
+  return (Expanded(
+      child: Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Container(
+        margin: const EdgeInsets.only(bottom: 6.0, left: 16.0),
+        child: Text(roomName,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+            softWrap: false,
+            style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 15,
+                color: isNewMessage == true ? Colors.white : Colors.black)),
+      ),
+      Container(
+        margin: const EdgeInsets.only(top: 6.0, left: 16.0),
+        child: Text(lastMessage,
+            style: TextStyle(
+                fontSize: 14,
+                color: isNewMessage == true ? Colors.white : Colors.black)),
+      ),
+    ],
+  )));
 }
