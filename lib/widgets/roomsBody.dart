@@ -78,7 +78,8 @@ class SingleRoom extends StatelessWidget {
             QueryOptions(document: gql(singleRoom), variables: {'id': roomId}),
         builder: (QueryResult result,
             {VoidCallback? refetch, FetchMore? fetchMore}) {
-          // if (result.isLoading) return Container();
+          if (result.data == null) return Container();
+          if (result.isLoading) return Container();
 
           final lastMessage = result.data?['room']?['messages'][0];
 
